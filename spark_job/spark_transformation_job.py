@@ -61,7 +61,7 @@ def main(env, bq_project, bq_dataset, transformed_table, route_insights_table, o
         logger.info(f"Writing transformed data to BigQuey table: {bq_project}.{bq_dataset}.{transformed_table}")       
         transformed_data.write \
             .format("bigquery") \
-            .option("table", f"{bq_project}:{bq_dataset}:{transformed_table}") \
+            .option("table", f"{bq_project}.{bq_dataset}.{transformed_table}") \
             .option("writeMethod", "direct")    \
             .mode("overwrite")  \
             .save()
@@ -69,7 +69,7 @@ def main(env, bq_project, bq_dataset, transformed_table, route_insights_table, o
         logger.info(f"Writing route insights to BigQuery table: {bq_project}.{bq_dataset}.{route_insights_table}")
         route_insights.write   \
             .format("bigquery") \
-            .option("table", f"{bq_project}:{bq_dataset}:{route_insights_table}") \
+            .option("table", f"{bq_project}.{bq_dataset}.{route_insights_table}") \
             .option("writeMethod", "direct")   \
             .mode("overwrite") \
             .save()
@@ -77,7 +77,7 @@ def main(env, bq_project, bq_dataset, transformed_table, route_insights_table, o
         logger.info(f"Writing booking origin insights to BigQuery table: {bq_project}.{bq_dataset}.{origin_insights_table}")
         booking_origin_insights.write   \
             .format("bigquery") \
-            .option("table", f"{bq_project}:{bq_dataset}:{origin_insights_table}") \
+            .option("table", f"{bq_project}.{bq_dataset}.{origin_insights_table}") \
             .option("writeMethod", "direct")   \
             .mode("overwrite") \
             .save()
