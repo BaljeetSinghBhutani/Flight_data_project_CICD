@@ -1,0 +1,12 @@
+{
+    "env": "prod",
+    "gcs_bucket": "airflow-projects-gsd",
+    "bq_project": "project-24871fad-51e3-458f-a9d",
+    "bq_dataset": "flight_data_prod",
+    "tables": {
+        "transformed_table": "transformed_flight_data_prod",
+        "route_insights_table": "route_insights_prod",
+        "origin_insights_table":"origin_insights_prod"
+    }
+
+}
