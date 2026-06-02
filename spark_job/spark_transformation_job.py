@@ -43,7 +43,7 @@ def main(env, bq_project, bq_dataset, transformed_table, route_insights_table, o
             "booking_success_rate", expr("booking_complete / num_passengers")
         )   
         
-        route_insights = transformed_data.gorupBy("route").agg(
+        route_insights = transformed_data.groupBy("route").agg(
             count("*").alias("total_bookings"),
             avg("flight_duration").alias("avg_flight_duration"),
             avg("length_of_stay").alias("avg_stay_length")
@@ -58,7 +58,7 @@ def main(env, bq_project, bq_dataset, transformed_table, route_insights_table, o
         )
         
         # Write Transformed to the BigQuery 
-        logger.info(f"Writing transformed data to BigQuey table: {bq_project}:{bq_dataset}.{transformed_table}")       
+        logger.info(f"Writing transformed data to BigQuey table: {bq_project}.{bq_dataset}.{transformed_table}")       
         transformed_data.write \
             .format("bigquery") \
             .option("table", f"{bq_project}:{bq_dataset}:{transformed_table}") \
@@ -66,18 +66,18 @@ def main(env, bq_project, bq_dataset, transformed_table, route_insights_table, o
             .mode("overwrite")  \
             .save()
                 
-        logger.info(f"Writing route insights to BigQuery table: {bq_project}:{bq_dataset}.{route_insights_table}")
+        logger.info(f"Writing route insights to BigQuery table: {bq_project}.{bq_dataset}.{route_insights_table}")
         route_insights.write   \
             .format("bigquery") \
-            .option("table", f"{bq_project}: {bq_dataset}:{route_insights_table}") \
+            .option("table", f"{bq_project}:{bq_dataset}:{route_insights_table}") \
             .option("writeMethod", "direct")   \
             .mode("overwrite") \
             .save()
     
-        logger.info(f"Writing booking origin insights to BigQuery table: {bq_project}:{bq_dataset}.{origin_insights_table}")
+        logger.info(f"Writing booking origin insights to BigQuery table: {bq_project}.{bq_dataset}.{origin_insights_table}")
         booking_origin_insights.write   \
             .format("bigquery") \
-            .option("table", f"{bq_project}: {bq_dataset}:{origin_insights_table}") \
+            .option("table", f"{bq_project}:{bq_dataset}:{origin_insights_table}") \
             .option("writeMethod", "direct")   \
             .mode("overwrite") \
             .save()
@@ -85,7 +85,7 @@ def main(env, bq_project, bq_dataset, transformed_table, route_insights_table, o
         logger.info("Data written to BigQuery successfully!!")
         
     except Exception as e:
-        logger.error(f"An error occuccered: {e}")
+        logger.error(f"An error occurred: {e}")
         sys.exit(1)
     finally:
         spark.stop()
@@ -94,7 +94,7 @@ def main(env, bq_project, bq_dataset, transformed_table, route_insights_table, o
 
 
 if __name__ == "__main__":
-    parser  = argparse.ArgumentParser(description="Process flight booking data and write to BigQuwry")
+    parser  = argparse.ArgumentParser(description="Process flight booking data and write to BigQuery")
     parser.add_argument("--env", required=True, help="Environment(e.g., dev, prod)")
     parser.add_argument("--bq_project", required=True, help = "BigQuery Project ID")
     parser.add_argument("--bq_dataset", required=True, help ="BigQuery dataset name")
